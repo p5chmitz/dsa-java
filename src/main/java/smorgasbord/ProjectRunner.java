@@ -3,6 +3,7 @@ package smorgasbord;
 import smorgasbord.TGG.GTG01;
 import smorgasbord.MAW.W01;
 import smorgasbord.lists.ArrayLists;
+import smorgasbord.lists.LinkedLists;
 
 
 /**
@@ -51,9 +52,10 @@ public class ProjectRunner {
         GTG01.empiricalTest();
         System.out.println("");
 
-        // Drives both static and dynamic array-based list implementations
-        ArrayLists.staticListDriver();
-        ArrayLists.dynamicListDriver();
+        // List drivers
+        //ArrayLists.staticListDriver();
+        //ArrayLists.dynamicListDriver();
+        LinkedLists.singlyLinkedListDriver();
     }
 
 }
