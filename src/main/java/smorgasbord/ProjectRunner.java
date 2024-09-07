@@ -53,9 +53,14 @@ public class ProjectRunner {
         System.out.println("");
 
         // List drivers
-        //ArrayLists.staticListDriver();
-        //ArrayLists.dynamicListDriver();
+        System.out.println("//////////////////\nStatic array list:\n//////////////////");
+        ArrayLists.staticListDriver();
+        System.out.println("///////////////////\nDynamic array list:\n///////////////////");
+        ArrayLists.dynamicListDriver();
+        System.out.println("///////////////////\nSingly linked list:\n///////////////////");
         LinkedLists.singlyLinkedListDriver();
+        System.out.println("///////////////////\nDoubly linked list:\n///////////////////");
+        LinkedLists.doublyLinkedListDriver();
     }
 
 }
