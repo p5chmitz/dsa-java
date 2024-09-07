@@ -132,7 +132,6 @@ public class LinkedLists {
             // The Entry's API
             public String getName() { return name; }
             public int getScore() { return score; }
-            //public String toString() { return "(" + name + ", " + score + ")"; }
 
         }
 
@@ -143,24 +142,15 @@ public class LinkedLists {
             private Node<E> next;
             private Node<E> prev;
 
-            public Node(String n, int s, Node<E> next, Node<E> prev) {
-                this.next = next;
-                this.prev = prev;
-            }
-
             // Constructors
             public Node() {}
-            public Node(Entry e, Node p, Node n) {
+            public Node(Entry e, Node<E> p, Node<E> n) {
                 this.entry = e;
                 this.prev = p;
                 this.next = n;
             }
 
             // The Node's API
-            public Node<E> getNext() { return next; }
-            public void setNext(Node<E> n) { next = n; }
-            public Node<E> getPrev() { return prev; }
-            public void setPrev(Node<E> n) { prev = n; }
             public String toString() { return "(" + entry.getName() + ", " + entry.getScore() + ")"; }
 
         }
@@ -171,8 +161,7 @@ public class LinkedLists {
         // IMPORTANT: You must update this field for all methods that change the number of Node/Entry objects in the list
         private int numEntries = 0;
         // Just a lonely, singly-linked list
-        private Entry currentEntry;
-        private Node<E> currentNode;
+        private Node<E> head;
 
         // The SinglyLinkedList's API
         /** Returns the number of elements in the list */
@@ -182,22 +171,22 @@ public class LinkedLists {
         /** Adds a new score to the collection */
         public void insert(Node<E> newNode) {
             // Adds first head node
-            if (currentNode == null) {
-                currentNode = newNode;
+            if (head == null) {
+                head = newNode;
                 numEntries++;
                 System.out.println(" at first head node.");
             // Replaces the head node if the new score is higher
-            } else if (currentNode.entry.score <= newNode.entry.score) {
+            } else if (head.entry.score <= newNode.entry.score) {
                 System.out.println(" as new head node.");
                 //newNode.prev = null; // Unnecessary because the new node doesn't have any pointers yet anyway
-                newNode.next = currentNode;
-                currentNode.prev = newNode;
+                newNode.next = head;
+                head.prev = newNode;
                 //currentNode.next = null; // Unnecessary because the sole head node's next pointer is already null
-                currentNode = newNode;
+                head = newNode;
                 numEntries++;
             } else {
                 System.out.println("\nIterating...");
-                Node<E> iterNode = currentNode; // Keeps the original head intact
+                Node<E> iterNode = head; // Keeps the original head intact
                 while (iterNode.next != null && newNode.entry.score <= iterNode.entry.score) {
                     // Advances the current node
                     iterNode = iterNode.next;
@@ -214,26 +203,32 @@ public class LinkedLists {
                 throw new IndexOutOfBoundsException("Error: out of bounds\n\tTried to access index " + index + " with list size " + numEntries);
             }
 
-            Node<E> current = currentNode;
-            Node<E> prev = null;
-            int c = 0;
+            Node<E> iterNode = head;
+            int counter = 0;
 
-            // Accounts for the special case of removing the head node;
-            // Otherwise walks the list to the target node
-            // and resets the previous node's pointer to the node after the target
-            if (index == 0) {
-                currentNode = current.next;
+            // Edge case to remove the head of the list
+            if (head != null && index == 0) {
+                    head.prev = null;
+                    head = head.next;
             } else {
-                while (c < index) {
-                    prev = current;
-                    current = current.next;
-                    c++;
+                // Finds the target node to remove
+                while (counter < index) {
+                    iterNode = iterNode.next;
+                    counter++;
                 }
-                prev.next = current.next;
+                // Resets pointers if the target is not the tail
+                if (iterNode.next != null) {
+                    iterNode.next.prev = iterNode.prev;
+                    iterNode.prev.next = iterNode.next;
+                }
+                // Edge case to remove the tail
+                else {
+                    iterNode.prev.next = null;
+                }
             }
 
             numEntries--; // Gotta keep score!
-            return current; // Returns the removed node
+            return iterNode; // Returns the removed node
 
         }
         /** Prints a formatted list to specified length */
@@ -242,7 +237,7 @@ public class LinkedLists {
             if (numEntries == 1) { noun = "entry"; } else { noun = "entries"; }
             System.out.println("The list has " + numEntries + " " + noun + ", here are the first " + len + ":");
 
-            DoublyLinkedList.Node node = currentNode;
+            DoublyLinkedList.Node<E> node = head;
             int e = 0;
             while (node != null && e < len) {
                 System.out.printf("%2d: %-6s %6s%n", e + 1, node.entry.name, node.entry.score);
@@ -306,10 +301,10 @@ public class LinkedLists {
         doublyLinkedList.printList( 5);
 
         // Removes entries at specified indices and prints the scoreboard after each removal
-        int[] indicesToRemove = {0, 1, 0};
+        int[] indicesToRemove = {0, 2, 1, 0};
         for (int index : indicesToRemove) {
-            System.out.println("Podium after removing score at index " + index);
-            doublyLinkedList.remove(index);
+            DoublyLinkedList.Node<T> node = doublyLinkedList.remove(index);
+            System.out.println("Podium after removing " + node.toString() + " at index " + index);
             doublyLinkedList.printList(3);
         }
     }
