@@ -8,8 +8,8 @@ public class LinkedLists {
         /** Each node of the linked list stores a pointer to the next node and a generic entry that contains the scores */
         private static class Node {
             // The Node's instance variables
-            private String name;
-            private int score;
+            private final String name;
+            private final int score;
             private Node next;
 
             public Node(String n, int s, Node node) {
@@ -19,10 +19,6 @@ public class LinkedLists {
             }
 
             // The Node's API
-            public String getName() { return name; }
-            public int getScore() { return score; }
-            public Node getNext() { return next; }
-            public void setNext(Node n) { next = n; }
             /** Because OFC Java cant just infer the class's member types */
             public String toString() { return "(" + name + ", " + score + ")"; }
 
@@ -138,12 +134,11 @@ public class LinkedLists {
         /** Each node of the linked list stores a pointer to the next node and a generic entry that contains the scores */
         private static class Node<E> {
             // The Node's instance variables
-            private Entry entry;
+            private final Entry entry;
             private Node<E> next;
             private Node<E> prev;
 
             // Constructors
-            public Node() {}
             public Node(Entry e, Node<E> p, Node<E> n) {
                 this.entry = e;
                 this.prev = p;
@@ -200,7 +195,11 @@ public class LinkedLists {
         public Node<E> remove(int index) {
             // Gets angry if you try to pass an OOB index
             if (index < 0 || index >= numEntries) {
-                throw new IndexOutOfBoundsException("Error: out of bounds\n\tTried to access index " + index + " with list size " + numEntries);
+                System.out.println("Error: List index " + index + " out of bounds for a list of length " + numEntries + "! " +
+                        "\nThe list will not change.");
+                Node<E> node = new Node<>(new DoublyLinkedList.Entry("Illegal operation", 0), null, null);
+                return node;
+                //throw new IndexOutOfBoundsException("Error: out of bounds\n\tTried to access index " + index + " with list size " + numEntries);
             }
 
             Node<E> iterNode = head;
@@ -301,7 +300,7 @@ public class LinkedLists {
         doublyLinkedList.printList( 5);
 
         // Removes entries at specified indices and prints the scoreboard after each removal
-        int[] indicesToRemove = {0, 2, 1, 0};
+        int[] indicesToRemove = {0, 7, 1, 1};
         for (int index : indicesToRemove) {
             DoublyLinkedList.Node<T> node = doublyLinkedList.remove(index);
             System.out.println("Podium after removing " + node.toString() + " at index " + index);
