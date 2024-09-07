@@ -15,7 +15,7 @@ $ cd /MyPrograms/dsa-java
 ```
 3) Compile and run the JAR
 ```
-~/MyPrograms/dsa-java $ java -cp target/dsa-java-0.1.0-jar-with-dependencies.jar smorgasbord.Main
+~/MyPrograms/dsa-java $ java -cp target/dsa-java-0.1.0-jar-with-dependencies.jar smorgasbord.ProjectRunner
 ```
 
 ### Build and run with Maven
@@ -25,7 +25,7 @@ This does something similar to the previous workflow but doesn't create a JAR. I
   <groupId>org.codehaus.mojo</groupId>
   <artifactId>exec-maven-plugin</artifactId>
   <configuration>
-    <mainClass>smorgasbord.Main</mainClass>
+    <mainClass>smorgasbord.ProjectRunner</mainClass>
   </configuration>
 </plugin>
 ```
